@@ -1,0 +1,23 @@
+{
+  "name": "Campus Login Scanner",
+  "short_name": "LoginScanner",
+  "description": "Scan QR codes and verify identity with biometrics to login to campus portals.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f0f4f8",
+  "theme_color": "#028090",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "https://via.placeholder.com/192x192.png?text=Login+192",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "https://via.placeholder.com/512x512.png?text=Login+512",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "categories": ["education", "security"]
+}

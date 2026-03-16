@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Login Scanner</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#028090">
+    <link rel="apple-touch-icon" href="https://via.placeholder.com/192x192.png?text=Campus+Scan">
+    <!-- QR Code Library via CDN -->
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <span class="icon">🔒</span>
+                <h1>Campus Login</h1>
+            </div>
+        </header>
+
+        <main id="app">
+            <!-- Step 1: Input Student ID -->
+            <section id="step-1" class="step active">
+                <div class="card">
+                    <h2>Welcome</h2>
+                    <p>Enter your Student ID to begin scanning.</p>
+                    <div class="input-group">
+                        <label for="student-id">Student ID</label>
+                        <input type="text" id="student-id" placeholder="e.g. S12345" autocomplete="off">
+                    </div>
+                    <button id="start-scan-btn" class="btn primary">
+                        <span class="btn-icon">📷</span>
+                        Scan QR Code
+                    </button>
+                </div>
+            </section>
+
+            <!-- Step 2: Camera Preview -->
+            <section id="step-2" class="step">
+                <div class="card scanner-card">
+                    <div id="reader" style="width: 100%;"></div>
+                    <button id="stop-scan-btn" class="btn secondary mt-4">Cancel</button>
+                </div>
+            </section>
+
+            <!-- Step 3: Biometric Auth -->
+            <section id="step-3" class="step">
+                <div class="card text-center">
+                    <div class="success-icon">✅</div>
+                    <h2>QR Scanned!</h2>
+                    <p id="session-info" class="mb-4">Session detected. Verify your identity to login.</p>
+                    
+                    <button id="biometric-btn" class="btn primary mb-4">
+                        <span class="btn-icon">👤</span>
+                        Verify with Biometrics
+                    </button>
+                    
+                    <button id="pin-fallback-btn" class="btn outline">
+                        Use PIN instead
+                    </button>
+                </div>
+            </section>
+
+            <!-- Status Messages -->
+            <div id="status-msg" class="status-msg hidden"></div>
+            
+            <!-- Loading Overlay -->
+            <div id="loading-overlay" class="overlay hidden">
+                <div class="spinner"></div>
+                <p>Processing...</p>
+            </div>
+        </main>
+
+        <footer>
+            <p>Secure Passwordless Authentication</p>
+        </footer>
+    </div>
+
+    <script src="scanner.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(reg => console.log('Service Worker registered'))
+                    .catch(err => console.error('Service Worker registration failed', err));
+            });
+        }
+    </script>
+</body>
+</html>
