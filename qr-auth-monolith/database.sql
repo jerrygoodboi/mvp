@@ -1,3 +1,13 @@
+CREATE TABLE IF NOT EXISTS admins (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Insert a default admin for the prototype
+INSERT OR IGNORE INTO admins (username, password) VALUES ('admin', 'admin123');
+
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     studentId TEXT UNIQUE NOT NULL,

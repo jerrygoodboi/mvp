@@ -13,8 +13,13 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    const adminToken = localStorage.getItem('adminToken');
+    
+    // Prioritize adminToken for admin routes, otherwise use standard token
+    if (config.url.includes('/admin') && adminToken) {
+        config.headers.Authorization = `Bearer ${adminToken}`;
+    } else if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
@@ -49,6 +54,49 @@ export const validateToken = async () => {
     console.error('API Error: validateToken', error);
     throw error.response ? error.response.data : new Error('Token validation failed');
   }
+};
+
+/**
+ * Admin API functions
+ */
+export const adminLogin = async (credentials) => {
+    const response = await api.post('/admin/login', credentials);
+    return response.data;
+};
+
+export const fetchStudents = async () => {
+    const response = await api.get('/admin/students');
+    return response.data;
+};
+
+export const addStudent = async (studentData) => {
+    const response = await api.post('/admin/students', studentData);
+    return response.data;
+};
+
+export const updateStudent = async (id, studentData) => {
+    const response = await api.put(`/admin/students/${id}`, studentData);
+    return response.data;
+};
+
+export const unbindDevice = async (studentId) => {
+    const response = await api.post('/admin/students/unbind', { studentId });
+    return response.data;
+};
+
+export const deleteStudent = async (studentId) => {
+    const response = await api.delete(`/admin/students/${studentId}`);
+    return response.data;
+};
+
+export const fetchHistory = async () => {
+    const response = await api.get('/admin/history');
+    return response.data;
+};
+
+export const fetchSessions = async () => {
+    const response = await api.get('/admin/sessions');
+    return response.data;
 };
 
 export default api;

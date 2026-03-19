@@ -6,6 +6,7 @@ const cors = require('cors');
 const { WebSocketServer } = require('ws');
 const path = require('path');
 const authRoutes = require('./routes/auth');
+const adminRoutes = require('./routes/admin');
 
 const app = express();
 
@@ -67,6 +68,7 @@ authRoutes.setWss(wss);
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Serve the PWA scanner
 app.use('/scanner', express.static(path.join(__dirname, '../qr-scanner-pwa')));
