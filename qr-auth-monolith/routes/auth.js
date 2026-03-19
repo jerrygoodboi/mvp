@@ -56,17 +56,17 @@ router.post('/generate-qr', async (req, res) => {
  * Validates the session and returns an authentication token
  */
 router.post('/verify-qr', (req, res) => {
-    const { sessionId, studentId } = req.body;
+    const { sessionId, studentId, deviceId } = req.body;
 
-    if (!sessionId || !studentId) {
-        return res.status(400).json({ error: 'Session ID and Student ID are required' });
+    if (!sessionId || !studentId || !deviceId) {
+        return res.status(400).json({ error: 'Session ID, Student ID, and Device ID are required' });
     }
 
     try {
         // Find user
         const userStmt = db.prepare('SELECT * FROM users WHERE studentId = ?');
         const user = userStmt.get(studentId);
-        
+
         if (!user) {
             console.log(`Verification failed: User ${studentId} not found`);
             // Log failed attempt
@@ -75,10 +75,21 @@ router.post('/verify-qr', (req, res) => {
             return res.status(404).json({ error: 'Student not found' });
         }
 
+        // DEVICE BINDING LOGIC
+        if (!user.deviceId) {
+            // Auto-pair the first device that scans for this user
+            const pairStmt = db.prepare('UPDATE users SET deviceId = ? WHERE studentId = ?');
+            pairStmt.run(deviceId, studentId);
+            console.log(`Successfully paired device ${deviceId} to student ${studentId}`);
+        } else if (user.deviceId !== deviceId) {
+            console.log(`Security Alert: Device mismatch for ${studentId}. Expected ${user.deviceId}, got ${deviceId}`);
+            return res.status(403).json({ error: 'This device is not registered to your account. Please contact support to unbind your old device.' });
+        }
+
         // Check session
         const sessionStmt = db.prepare('SELECT * FROM sessions WHERE sessionId = ?');
         const session = sessionStmt.get(sessionId);
-        
+
         if (!session) {
             console.log(`Verification failed: Session ${sessionId} not found`);
             return res.status(404).json({ error: 'Session not found' });

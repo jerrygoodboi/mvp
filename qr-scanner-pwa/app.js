@@ -2,8 +2,22 @@
  * app.js - Main application logic, Biometric Authentication, and API calls
  */
 
-// IMPORTANT: Change this to your laptop's local IP address (e.g. https://192.168.1.5:4000/api)
-// Browsers treat 'localhost' as secure, but when using a phone, you must use the laptop's IP.
+/**
+ * Device Identification Logic
+ * Generates or retrieves a unique persistent ID for this device
+ */
+function getDeviceId() {
+    let deviceId = localStorage.getItem('device_id');
+    if (!deviceId) {
+        // Generate a random unique ID for this device
+        deviceId = 'dev_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+        localStorage.setItem('device_id', deviceId);
+        console.log("New unique device ID generated:", deviceId);
+    }
+    return deviceId;
+}
+
+// IMPORTANT: Using secure HTTPS with local IP
 const API_BASE_URL = 'https://10.184.58.4:4000/api'; 
 let currentSessionId = null;
 let currentStudentId = null;
@@ -96,8 +110,10 @@ pinFallbackBtn.addEventListener('click', async () => {
  */
 async function verifyLoginWithBackend() {
     try {
+        const deviceId = getDeviceId();
         let sessionIdToSend = currentSessionId;
         
+        // If the token is a JWT, extract the sessionId from the payload
         if (currentSessionId.includes('.')) {
             try {
                 const payload = JSON.parse(atob(currentSessionId.split('.')[1]));
@@ -110,7 +126,8 @@ async function verifyLoginWithBackend() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 sessionId: sessionIdToSend,
-                studentId: currentStudentId
+                studentId: currentStudentId,
+                deviceId: deviceId
             })
         });
 
@@ -126,6 +143,10 @@ async function verifyLoginWithBackend() {
             }, 3000);
         } else {
             showStatus(data.error || "Login verification failed", "error");
+            // If device mismatch, explain it
+            if (response.status === 403) {
+                console.warn("Device Binding Error:", data.error);
+            }
             goToStep(1);
         }
     } catch (err) {

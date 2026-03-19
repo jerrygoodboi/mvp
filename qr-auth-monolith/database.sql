@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS users (
     studentId TEXT UNIQUE NOT NULL,
     name TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL,
+    deviceId TEXT,
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
