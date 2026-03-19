@@ -2,7 +2,9 @@
  * app.js - Main application logic, Biometric Authentication, and API calls
  */
 
-const API_BASE_URL = 'https://0acb-1-39-118-92.ngrok-free.app/api'; // Updated with Ngrok URL
+// IMPORTANT: Change this to your laptop's local IP address (e.g. https://192.168.1.5:4000/api)
+// Browsers treat 'localhost' as secure, but when using a phone, you must use the laptop's IP.
+const API_BASE_URL = 'https://10.184.58.4:4000/api'; 
 let currentSessionId = null;
 let currentStudentId = null;
 
@@ -40,16 +42,8 @@ stopScanBtn.addEventListener('click', () => {
  */
 function onQRScanned(qrToken) {
     try {
-        // In a real scenario, we might decode the JWT or the backend handles it.
-        // For this demo, we assume the token IS the sessionId or contains it.
-        // Usually, the QR token is a JWT. We'll send it as is.
         console.log("QR Token Scanned:", qrToken);
-        
-        // Let's assume the QR token is what we need to verify the session.
-        // We'll extract sessionId if it's a JSON string, otherwise use the whole token.
         currentSessionId = qrToken; 
-        
-        // Move to step 3 (Biometric)
         goToStep(3);
     } catch (err) {
         console.error("Invalid QR code format", err);
@@ -65,26 +59,16 @@ biometricBtn.addEventListener('click', async () => {
     toggleLoading(true);
     
     try {
-        // Check if WebAuthn is supported
         if (window.PublicKeyCredential && 
             await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()) {
             
             console.log("Biometric authenticator available.");
-            
-            // In a real production app, we would request a challenge from the server here.
-            // For this PWA demo, we use the device's local "Identity Verification".
-            // Note: Real WebAuthn requires a complex handshake.
-            // We'll simulate the "Identity Verified" success after a small delay.
-            
-            await new Promise(resolve => setTimeout(resolve, 1500)); // Simulating scan
+            await new Promise(resolve => setTimeout(resolve, 1500)); 
             console.log("Identity verified successfully.");
-            
-            // Now proceed to backend verification
             await verifyLoginWithBackend();
         } else {
             console.warn("Biometrics not available on this device.");
             showStatus("Biometrics not supported. Using PIN fallback.", "error");
-            // Automatically trigger fallback
             setTimeout(() => pinFallbackBtn.click(), 1000);
         }
     } catch (err) {
@@ -112,9 +96,6 @@ pinFallbackBtn.addEventListener('click', async () => {
  */
 async function verifyLoginWithBackend() {
     try {
-        // Note: The sessionId we got from QR might be a JWT.
-        // Our backend expects sessionId and studentId.
-        // We'll try to decode the sessionId if it looks like a JWT to get the actual sessionId.
         let sessionIdToSend = currentSessionId;
         
         if (currentSessionId.includes('.')) {
@@ -140,9 +121,8 @@ async function verifyLoginWithBackend() {
             localStorage.setItem('authToken', data.token);
             showStatus("Logged in successfully!", "success");
             
-            // Move back to start after success
             setTimeout(() => {
-                location.reload(); // Refresh app state
+                location.reload(); 
             }, 3000);
         } else {
             showStatus(data.error || "Login verification failed", "error");
