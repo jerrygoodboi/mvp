@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Recognition - Campus Lab OS</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <header>
+                <h1>System Recognition</h1>
+                <p>Look into the camera to load your personal OS profile.</p>
+            </header>
+
+            <div id="recognition-ui">
+                <div class="camera-container">
+                    <video id="camera-preview" autoplay playsinline muted class="hidden"></video>
+                    <canvas id="photo-canvas" class="hidden"></canvas>
+                    
+                    <div id="camera-placeholder" class="placeholder">
+                        <span class="icon">👤</span>
+                        <p>Scanner ready</p>
+                    </div>
+
+                    <div id="success-overlay" class="overlay hidden">
+                        <div class="success-check">✓</div>
+                        <h3>Profile Verified!</h3>
+                    </div>
+                </div>
+
+                <div class="button-stack">
+                    <button type="button" id="start-recognition-btn" class="btn secondary">Start Recognition</button>
+                    <button type="button" id="recognize-btn" class="btn primary hidden">Recognize Me</button>
+                    <button type="button" id="retry-btn" class="btn secondary hidden">Try Again</button>
+                </div>
+            </div>
+
+            <div id="result-area" class="hidden">
+                <div class="user-profile">
+                    <div class="profile-info">
+                        <h2 id="user-name">John Doe</h2>
+                        <p id="user-id">ID: S12345</p>
+                        <div class="confidence-tag">Match: <span id="confidence-score">98%</span></div>
+                    </div>
+                    <div class="loading-os">
+                        <div class="os-spinner"></div>
+                        <p>Mounting Linux home directory...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="status-message" class="status-msg hidden"></div>
+
+            <section id="history-section" class="mt-8">
+                <h3>Recent Lab Access</h3>
+                <ul id="history-list" class="history-list">
+                    <!-- History items will be injected here -->
+                    <li class="loading-item">Fetching access logs...</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+
+    <script src="js/camera.js"></script>
+    <script src="js/recognition.js"></script>
+</body>
+</html>

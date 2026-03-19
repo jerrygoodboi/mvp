@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Enrollment - Campus Lab OS</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <header>
+                <h1>Face Enrollment</h1>
+                <p>Register your face to access your personalized Linux profile at any lab station.</p>
+            </header>
+
+            <form id="enrollment-form">
+                <div class="input-group">
+                    <label for="student-id">Student ID</label>
+                    <input type="text" id="student-id" placeholder="e.g. S12345" required>
+                </div>
+                <div class="input-group">
+                    <label for="full-name">Full Name</label>
+                    <input type="text" id="full-name" placeholder="e.g. John Doe" required>
+                </div>
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="e.g. john@example.com" required>
+                </div>
+
+                <div class="camera-container">
+                    <video id="camera-preview" autoplay playsinline muted class="hidden"></video>
+                    <canvas id="photo-canvas" class="hidden"></canvas>
+                    <img id="captured-preview" class="hidden" alt="Captured Face">
+                    
+                    <div id="camera-placeholder" class="placeholder">
+                        <span class="icon">📷</span>
+                        <p>Camera inactive</p>
+                    </div>
+                </div>
+
+                <div class="button-stack">
+                    <button type="button" id="start-camera-btn" class="btn secondary">Start Camera</button>
+                    <button type="button" id="capture-photo-btn" class="btn accent hidden">Capture Photo</button>
+                    <button type="button" id="retake-photo-btn" class="btn secondary hidden">Take Another Photo</button>
+                    <button type="submit" id="enroll-btn" class="btn primary hidden">Enroll Face</button>
+                </div>
+            </form>
+
+            <div id="status-message" class="status-msg hidden"></div>
+        </div>
+    </div>
+
+    <script src="js/camera.js"></script>
+    <script src="js/enrollment.js"></script>
+</body>
+</html>
