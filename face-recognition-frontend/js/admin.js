@@ -2,7 +2,7 @@
  * admin.js - Admin Logic for Face Recognition
  */
 
-const API_BASE_URL = 'http://10.138.24.4:4000'; // Match backend port
+const API_BASE_URL = window.FACE_CONFIG ? window.FACE_CONFIG.API_BASE_URL : 'http://10.138.24.4:4000'; // Match backend port
 
 document.addEventListener('DOMContentLoaded', () => {
     const loginContainer = document.getElementById('login-container');

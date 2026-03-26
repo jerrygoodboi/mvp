@@ -17,8 +17,8 @@ function getDeviceId() {
     return deviceId;
 }
 
-// IMPORTANT: Using secure HTTPS with local IP
-const API_BASE_URL = 'https://10.138.24.4:4000/api'; 
+// Use centralized config
+const API_BASE_URL = window.APP_CONFIG ? window.APP_CONFIG.API_BASE_URL : 'https://10.138.24.4:4000/api'; 
 let currentSessionId = null;
 let currentStudentId = null;
 
