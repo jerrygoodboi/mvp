@@ -58,8 +58,8 @@ To run the complete suite, open **three separate terminals**:
 cd qr-auth-monolith
 npm start
 ```
-*   **Portal**: `https://10.184.58.4:4000`
-*   **Admin**: `https://10.184.58.4:4000/admin` (User: `admin` / Pass: `admin123`)
+*   **Portal**: `https://10.138.24.4:4000`
+*   **Admin**: `https://10.138.24.4:4000/admin` (User: `admin` / Pass: `admin123`)
 
 ### Terminal 2: Face Recognition Engine (Port 4000 - different process)
 *Note: If testing on the same machine, ensure you change the port in `main.py` if needed.*
@@ -73,7 +73,7 @@ python main.py
 cd qr-scanner-pwa
 npx serve .
 ```
-*   **Access**: `http://10.184.58.4:5000` (or via LocalTunnel/Ngrok for phone access).
+*   **Access**: `http://10.138.24.4:5000` (or via LocalTunnel/Ngrok for phone access).
 
 ---
 
@@ -87,7 +87,7 @@ Even if a QR code is scanned, the login request is only sent to the server if th
 
 ### 3. HTTPS for Biometrics
 Browsers block camera and biometric APIs on insecure connections. This system uses local SSL certificates. 
-**Crucial**: You must visit the backend URL (`https://10.184.58.4:4000`) once on your phone and click "Proceed anyway" to accept the certificate.
+**Crucial**: You must visit the backend URL (`https://10.138.24.4:4000`) once on your phone and click "Proceed anyway" to accept the certificate.
 
 ---
 

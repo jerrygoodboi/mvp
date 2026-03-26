@@ -18,7 +18,7 @@ function getDeviceId() {
 }
 
 // IMPORTANT: Using secure HTTPS with local IP
-const API_BASE_URL = 'https://10.184.58.4:4000/api'; 
+const API_BASE_URL = 'https://10.138.24.4:4000/api'; 
 let currentSessionId = null;
 let currentStudentId = null;
 

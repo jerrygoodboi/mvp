@@ -31,6 +31,19 @@ def init_db():
             timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
         )
     ''')
+
+    # Admins table
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS admins (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT UNIQUE NOT NULL,
+            password TEXT NOT NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+    
+    # Insert default admin
+    cursor.execute("INSERT OR IGNORE INTO admins (username, password) VALUES ('admin', 'admin123')")
     
     conn.commit()
     conn.close()
@@ -52,6 +65,30 @@ def save_student(student_id, name, email, encoding):
     finally:
         conn.close()
 
+def update_student(id, student_id, name, email):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            "UPDATE students SET student_id = ?, name = ?, email = ? WHERE id = ?",
+            (student_id, name, email, id)
+        )
+        conn.commit()
+        return cursor.rowcount > 0
+    except sqlite3.IntegrityError:
+        return False
+    finally:
+        conn.close()
+
+def delete_student(student_id):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM students WHERE student_id = ?", (student_id,))
+    conn.commit()
+    success = cursor.rowcount > 0
+    conn.close()
+    return success
+
 def get_all_students():
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
@@ -69,6 +106,15 @@ def get_all_students():
         })
     return students
 
+def get_all_students_full():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, student_id, name, email, created_at FROM students ORDER BY created_at DESC")
+    rows = [dict(row) for row in cursor.fetchall()]
+    conn.close()
+    return rows
+
 def log_access(student_id, status, confidence=0.0):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
@@ -79,7 +125,7 @@ def log_access(student_id, status, confidence=0.0):
     conn.commit()
     conn.close()
 
-def get_history(limit=10):
+def get_history(limit=50):
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
@@ -92,5 +138,14 @@ def get_history(limit=10):
     rows = [dict(row) for row in cursor.fetchall()]
     conn.close()
     return rows
+
+def admin_login(username, password):
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM admins WHERE username = ? AND password = ?", (username, password))
+    admin = cursor.fetchone()
+    conn.close()
+    return dict(admin) if admin else None
 
 init_db()

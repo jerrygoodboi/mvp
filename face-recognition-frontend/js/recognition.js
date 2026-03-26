@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const formData = new FormData();
         formData.append('faceImage', blob, 'recognition.jpg');
 
-        const response = await fetch('http://10.184.58.4:4000/api/face/recognize', {
+        const response = await fetch('http://10.138.24.4:4000/api/face/recognize', {
             method: 'POST',
             body: formData
         });
@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     async function updateHistory() {
         try {
-            const response = await fetch('http://10.184.58.4:4000/api/face/history');
+            const response = await fetch('http://10.138.24.4:4000/api/face/history');
             const data = await response.json();
 
             if (data.length === 0) {

@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append('email', email);
         formData.append('faceImage', blob, `${studentId}.jpg`);
 
-        const response = await fetch('http://10.184.58.4:4000/api/face/enroll', {
+        const response = await fetch('http://10.138.24.4:4000/api/face/enroll', {
             method: 'POST',
             body: formData
         });

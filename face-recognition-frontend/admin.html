@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Face Recognition</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="login-container" class="container">
+        <div class="card">
+            <header>
+                <h1>Admin Access</h1>
+                <p>Please log in to manage face recognition data.</p>
+            </header>
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" value="admin" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" value="admin123" required>
+                </div>
+                <button type="submit" class="btn primary">Login as Administrator</button>
+            </form>
+            <div id="login-status" class="status-msg hidden"></div>
+        </div>
+    </div>
+
+    <div id="admin-panel" class="admin-container hidden">
+        <div class="card" style="text-align: left;">
+            <header class="flex-row">
+                <div>
+                    <h1>Admin Control Center</h1>
+                    <p>Manage enrolled students and view access logs.</p>
+                </div>
+                <button id="logout-btn" class="btn secondary btn-sm" style="width: 80px;">Logout</button>
+            </header>
+
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="students">Enrolled Students</button>
+                <button class="tab-btn" data-tab="history">Access History</button>
+            </div>
+
+            <div id="students-tab" class="tab-content">
+                <div class="flex-row">
+                    <h3>Student Database</h3>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Student ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Enrolled At</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="students-body">
+                            <!-- JS injected -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="history-tab" class="tab-content hidden">
+                <h3>System Logs (Last 100)</h3>
+                <div style="overflow-x: auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Student</th>
+                                <th>Status</th>
+                                <th>Confidence</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-body">
+                            <!-- JS injected -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="edit-modal" class="modal hidden">
+        <div class="modal-content">
+            <header>
+                <h2>Edit Student</h2>
+            </header>
+            <form id="edit-form">
+                <input type="hidden" id="edit-db-id">
+                <div class="input-group">
+                    <label for="edit-student-id">Student ID</label>
+                    <input type="text" id="edit-student-id" required>
+                </div>
+                <div class="input-group">
+                    <label for="edit-name">Full Name</label>
+                    <input type="text" id="edit-name" required>
+                </div>
+                <div class="input-group">
+                    <label for="edit-email">Email</label>
+                    <input type="email" id="edit-email" required>
+                </div>
+                <div class="button-stack">
+                    <button type="submit" class="btn primary">Update Info</button>
+                    <button type="button" id="close-modal" class="btn secondary">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>
